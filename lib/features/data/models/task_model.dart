@@ -8,7 +8,7 @@ class TaskModel extends TaskEntity {
     final String title,
     final String colorIndex,
     final String time,
-    final String isNotification,
+    final bool isNotification,
     final bool isCompleteTask,
     final String tasktype,
   }) : super(

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
@@ -23,6 +24,9 @@ class LocaldataSourceImpl implements LocaldataSource {
 
     _dbopencompleter.complete(datbase);
   }
+
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   @override
   Future<void> addNewTask(TaskEntity task) async {
@@ -60,8 +64,35 @@ class LocaldataSourceImpl implements LocaldataSource {
 
   @override
   Future<void> getNotification(TaskEntity task) {
-    // TODO: implement getNotification
-    throw UnimplementedError();
+    if (task.isNotification == false) {
+//show notification
+
+      final datetime = DateTime.parse(task.time);
+      final androidChannel = AndroidNotificationDetails(
+        task.id.toString(),
+        "Daily Task Notification",
+        "daily task Notification",
+        icon: "@mipmap/ic_launcher",
+        largeIcon: DrawableResourceAndroidBitmap("@mipmap/ic_launcher"),
+      );
+
+      final iosChannel = IOSNotificationDetails();
+      final notificationDetails = NotificationDetails(
+        android: androidChannel,
+        iOS: iosChannel,
+      );
+      flutterLocalNotificationsPlugin.showDailyAtTime(
+        task.id,
+        task.time,
+        "its time for ${task.title}",
+        Time(datetime.hour, datetime.minute, 0),
+        notificationDetails,
+      );
+    } else {
+      flutterLocalNotificationsPlugin.cancel(
+        task.id,
+      );
+    }
   }
 
   @override
@@ -74,14 +105,32 @@ class LocaldataSourceImpl implements LocaldataSource {
   }
 
   @override
-  Future<void> turnOnNotification(TaskEntity task) {
-    // TODO: implement turnOnNotification
-    throw UnimplementedError();
+  Future<void> turnOnNotification(TaskEntity task) async {
+    final newTask = TaskModel(
+      colorIndex: task.colorIndex,
+      title: task.title,
+      isCompleteTask: task.isCompleteTask,
+      isNotification: task.isNotification == true ? false : true,
+      tasktype: task.tasktype,
+      time: task.time,
+    ).tojson();
+
+    final finder = Finder(filter: Filter.byKey(task.id));
+    _taskStore.update(await _db, newTask, finder: finder);
   }
 
   @override
-  Future<void> updateTask(TaskEntity task) {
-    // TODO: implement updateTask
-    throw UnimplementedError();
+  Future<void> updateTask(TaskEntity task) async {
+    final newTask = TaskModel(
+      colorIndex: task.colorIndex,
+      title: task.title,
+      isCompleteTask: task.isCompleteTask == true ? false : true,
+      isNotification: task.isNotification,
+      tasktype: task.tasktype,
+      time: task.time,
+    ).tojson();
+
+    final finder = Finder(filter: Filter.byKey(task.id));
+    _taskStore.update(await _db, newTask, finder: finder);
   }
 }
