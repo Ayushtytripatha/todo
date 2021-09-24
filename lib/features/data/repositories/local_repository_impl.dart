@@ -34,4 +34,7 @@ class LocalRepositoryImpl implements LocalRepository {
   @override
   Future<void> updateTask(TaskEntity task) async =>
       localdataSource.updateTask(task);
+
+  @override
+  Future<void> initNotification() async => localdataSource.initNotification();
 }

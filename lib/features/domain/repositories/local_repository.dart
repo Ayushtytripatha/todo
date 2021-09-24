@@ -8,6 +8,6 @@ abstract class LocalRepository {
   Future<void> getNotification(TaskEntity task);
   Future<void> turnOnNotification(TaskEntity task);
   Future<List<TaskEntity>> getAllTasks();
-
+  Future<void> initNotification();
   Future<Database> openDatabase();
 }

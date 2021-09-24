@@ -11,6 +11,7 @@ import 'package:todo/features/domain/usecases/open_database_usecase.dart';
 import 'package:todo/features/domain/usecases/trun_off_notification_usecase.dart';
 import 'package:todo/features/domain/usecases/update_usecase.dart';
 import 'features/data/local_data_source/local_data_source_impl.dart';
+import 'features/domain/usecases/init_notification_usecase.dart';
 
 GetIt sl = GetIt.instance;
 Future<void> init() async {
@@ -24,9 +25,13 @@ Future<void> init() async {
         opendatabaseUseCase: sl.call(),
         turnOnNotificationUseCase: sl.call(),
         updateUseCase: sl.call(),
+        initNotificationUseCase: sl.call(),
       ));
 
 //usecases
+
+  sl.registerLazySingleton<InitNotificationUseCase>(
+      () => InitNotificationUseCase(localRepository: sl.call()));
   sl.registerLazySingleton<AddTaskUseCase>(
       () => AddTaskUseCase(localRepository: sl.call()));
   sl.registerLazySingleton<DeleteTaskUseCase>(

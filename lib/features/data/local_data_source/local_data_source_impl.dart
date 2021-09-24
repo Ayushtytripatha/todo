@@ -133,4 +133,14 @@ class LocaldataSourceImpl implements LocaldataSource {
     final finder = Finder(filter: Filter.byKey(task.id));
     _taskStore.update(await _db, newTask, finder: finder);
   }
+
+  @override
+  Future<void> initNotification() async {
+    var initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettingsIOs = IOSInitializationSettings();
+    var initSettings = InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOs);
+    flutterLocalNotificationsPlugin.initialize(initSettings);
+  }
 }

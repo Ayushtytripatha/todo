@@ -6,6 +6,7 @@ import 'package:todo/features/Presentation/widgets/common.dart';
 import 'package:todo/features/Presentation/widgets/theme/style.dart';
 import 'package:todo/features/domain/entities/task_entity.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/rendering.dart';
 
 class AddNewTask extends StatefulWidget {
   const AddNewTask({Key key}) : super(key: key);
@@ -50,7 +51,7 @@ class _AddNewTaskState extends State<AddNewTask> {
       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(8)),
-          color: Colors.blueGrey.withOpacity(.2)),
+          color: Colors.blueGrey[200].withOpacity(.6)),
       child: Scrollbar(
         thickness: 6,
         child: TextField(
@@ -94,7 +95,7 @@ class _AddNewTaskState extends State<AddNewTask> {
             },
             child: _selectedTaskTypeIndex == index
                 ? Container(
-                    padding: EdgeInsets.only(left: 10),
+                    padding: EdgeInsets.only(left: 15),
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 12),
                       decoration: BoxDecoration(
@@ -128,7 +129,9 @@ class _AddNewTaskState extends State<AddNewTask> {
                         Text(
                           name,
                           style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ],
                     ),
@@ -194,7 +197,7 @@ class _AddNewTaskState extends State<AddNewTask> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(10)),
               gradient: LinearGradient(colors: [
-                Colors.indigo,
+                Colors.indigo[700],
                 color6FADE4,
               ], end: Alignment.topLeft, begin: Alignment.topRight),
             ),
@@ -215,25 +218,27 @@ class _AddNewTaskState extends State<AddNewTask> {
     if (_texttextController.text.isEmpty) {
       return;
     }
-    BlocProvider.of<TaskCubit>(context).addNewTask(
-        task: TaskEntity(
-      title: _texttextController.text,
-      tasktype: taskTYpeList[_selectedTaskTypeIndex],
-      isNotification: false,
-      isCompleteTask: false,
-      colorIndex: _selectedTaskTypeIndex,
-      time: _selectedTime.toString(),
-    ));
-    Future.delayed(Duration(seconds: 1), () {
-      Navigator.pop(context);
-      Fluttertoast.showToast(
-          msg: "New Task Added Successfully",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.blue,
-          textColor: Colors.white,
-          fontSize: 16.0);
+    setState(() {
+      BlocProvider.of<TaskCubit>(context).addNewTask(
+          task: TaskEntity(
+        title: _texttextController.text,
+        tasktype: taskTYpeList[_selectedTaskTypeIndex],
+        isNotification: false,
+        isCompleteTask: false,
+        colorIndex: _selectedTaskTypeIndex,
+        time: _selectedTime.toString(),
+      ));
+      Future.delayed(Duration(seconds: 1), () {
+        Navigator.pop(context);
+        Fluttertoast.showToast(
+            msg: "New Task Added Successfully",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.blue,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      });
     });
   }
 }

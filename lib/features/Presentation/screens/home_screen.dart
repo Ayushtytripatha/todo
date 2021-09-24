@@ -1,8 +1,11 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:todo/app_const.dart';
+import 'package:todo/features/Presentation/cubit/task_cubit.dart';
 import 'package:todo/features/Presentation/pages/complete_task.dart';
+
 import 'package:todo/features/Presentation/pages/home_page.dart';
 import 'package:todo/features/Presentation/widgets/theme/style.dart';
 
@@ -21,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Widget> get _pages => [
         HomePage(),
-        CompleteTask(),
+        CompleteTaskPage(),
       ];
   int _pagenavindex = 0;
   @override
@@ -36,7 +39,9 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.white,
         ),
         onPressed: () {
-          Navigator.pushNamed(context, PageConst.addNewTaskPage);
+          Navigator.pushNamed(context, PageConst.addNewTaskPage).then((value) {
+            BlocProvider.of<TaskCubit>(context).getAllTask();
+          });
         },
       ),
       floatingActionButtonLocation:
