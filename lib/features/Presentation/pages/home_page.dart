@@ -121,6 +121,17 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.white.withOpacity(.8),
                       ),
                     ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      "${DateFormat('EEE , d/M/y').format(DateTime.now())}",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white.withOpacity(.8),
+                      ),
+                    ),
                   ],
                 ),
                 PopupMenuButton<String>(
