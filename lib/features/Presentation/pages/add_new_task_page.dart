@@ -17,8 +17,11 @@ class AddNewTask extends StatefulWidget {
 
 class _AddNewTaskState extends State<AddNewTask> {
   int _selectedTaskTypeIndex = 0;
+
   DateTime _selectedTime = DateTime.now();
+
   TextEditingController _texttextController = TextEditingController();
+
   void dispose() {
     _texttextController.dispose();
     super.dispose();
@@ -56,7 +59,7 @@ class _AddNewTaskState extends State<AddNewTask> {
         thickness: 6,
         child: TextField(
           controller: _texttextController,
-          maxLines: 4,
+          maxLines: 2,
           decoration: InputDecoration(
               hintText: "e.g morning walk", border: InputBorder.none),
         ),
